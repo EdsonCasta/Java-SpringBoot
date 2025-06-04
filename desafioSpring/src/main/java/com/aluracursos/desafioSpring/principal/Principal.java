@@ -5,6 +5,7 @@ import com.aluracursos.desafioSpring.model.RespuestaAPI;
 import com.aluracursos.desafioSpring.service.ConsumoAPI;
 import com.aluracursos.desafioSpring.service.ConvierteDatos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Principal {
@@ -14,11 +15,40 @@ public class Principal {
     private ConvierteDatos convierteDatos = new ConvierteDatos();
 
     public void muestraElMenu() {
-        var json = consumoAPI.obtenerDatos(URL_BASE);
-        System.out.println(json);
+        int pagina = 1;
+        boolean hayMasPaginas = true;
+        List<DatosPersonajes> todosLosPersonajes = new ArrayList<>();
 
-        RespuestaAPI respuestaAPI = convierteDatos.obtenerDatos(json, RespuestaAPI.class);
-        List<DatosPersonajes> personajes = respuestaAPI.items();
-        System.out.println(personajes);
+        while (hayMasPaginas) {
+            var json = consumoAPI.obtenerDatos(URL_BASE + "?page=" + pagina + "&limit=10");
+            RespuestaAPI respuestaAPI = convierteDatos.obtenerDatos(json, RespuestaAPI.class);
+
+            System.out.println(json);
+
+            if (respuestaAPI.items() == null || respuestaAPI.items().isEmpty()) {
+                hayMasPaginas = false;
+            } else {
+                todosLosPersonajes.addAll(respuestaAPI.items());
+                pagina++;
+            }
+        }
+        System.out.println();
+        System.out.println("Se encontraron: " + todosLosPersonajes.size() + " Personajes: \n");
+        System.out.println(todosLosPersonajes);
+        // todosLosPersonajes.forEach(p -> System.out.println("- " + p.nombre()));
+
+        // Top 10 de los personajes mas poderosos
+        System.out.println();
+        System.out.println("Top 10 de los personajes mas poderosos: ");
+
+        todosLosPersonajes.stream()
+                .filter(p -> p.ki() != null && p.ki().replace(".", "").matches("\\d+"))
+                .sorted((p1, p2) -> {
+                    int ki1 = Integer.parseInt(p1.ki().replace(".", ""));
+                    int ki2 = Integer.parseInt(p2.ki().replace(".", ""));
+                    return Integer.compare(ki2,ki1);
+                })
+                .limit(10)
+                .forEach(p -> System.out.println("Nombre: " + p.nombre() + " | Kit: " + p.ki()));
     }
 }
