@@ -1,7 +1,11 @@
 package com.aluracursos.desafioSpring.principal;
 
+import com.aluracursos.desafioSpring.model.DatosPersonajes;
+import com.aluracursos.desafioSpring.model.RespuestaAPI;
 import com.aluracursos.desafioSpring.service.ConsumoAPI;
 import com.aluracursos.desafioSpring.service.ConvierteDatos;
+
+import java.util.List;
 
 public class Principal {
 
@@ -12,5 +16,9 @@ public class Principal {
     public void muestraElMenu() {
         var json = consumoAPI.obtenerDatos(URL_BASE);
         System.out.println(json);
+
+        RespuestaAPI respuestaAPI = convierteDatos.obtenerDatos(json, RespuestaAPI.class);
+        List<DatosPersonajes> personajes = respuestaAPI.items();
+        System.out.println(personajes);
     }
 }
