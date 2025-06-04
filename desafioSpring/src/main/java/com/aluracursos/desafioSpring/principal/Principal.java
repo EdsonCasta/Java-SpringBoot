@@ -7,6 +7,7 @@ import com.aluracursos.desafioSpring.service.ConvierteDatos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Principal {
 
@@ -50,5 +51,38 @@ public class Principal {
                 })
                 .limit(10)
                 .forEach(p -> System.out.println("Nombre: " + p.nombre() + " | Kit: " + p.ki()));
+
+        // Busqueda por Nombre
+        System.out.println();
+        Scanner escribir = new Scanner(System.in);
+
+        while (true) {
+            System.out.println();
+            System.out.println("Escribe el nombre del personaje: ");
+            String buscandoNombre = escribir.nextLine().toLowerCase().replace(" ", "");
+
+            if (buscandoNombre.equals("salir")) {
+                System.out.println("Saliendo del programa. ¡Gracias por usar el buscador de Dragon Ball!");
+                break;
+            }
+
+            List<DatosPersonajes> result = new ArrayList<>();
+            for (DatosPersonajes personaje : todosLosPersonajes) {
+                if (personaje.nombre() != null && personaje.nombre().toLowerCase().replace(" ", "").contains(buscandoNombre)) {
+                    result.add(personaje);
+                }
+            }
+            if (result.isEmpty()) {
+                System.out.println("No se encontro el personaje");
+            } else {
+                System.out.println("\nPersonaje Encontrado: ");
+                result.forEach(p -> System.out.println("Nombre: " + p.nombre() +
+                        " | Raza: " + p.raza() +
+                        " | Género: " + p.genero() +
+                        " | Ki: " + p.ki()));
+                System.out.println("\n¡Escribe 'salir' si deseas parar la Busqueda!");
+            }
+            System.out.println();
+        }
     }
 }
