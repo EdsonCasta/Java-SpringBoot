@@ -5,9 +5,8 @@ import com.aluracursos.desafioSpring.model.RespuestaAPI;
 import com.aluracursos.desafioSpring.service.ConsumoAPI;
 import com.aluracursos.desafioSpring.service.ConvierteDatos;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -34,7 +33,7 @@ public class Principal {
             }
         }
         System.out.println();
-        System.out.println("Se encontraron: " + todosLosPersonajes.size() + " Personajes: \n");
+        System.out.println("Se encontraron: " + todosLosPersonajes.size() + " Personajes: ");
         System.out.println(todosLosPersonajes);
         // todosLosPersonajes.forEach(p -> System.out.println("- " + p.nombre()));
 
@@ -82,7 +81,31 @@ public class Principal {
                         " | Ki: " + p.ki()));
                 System.out.println("\n¡Escribe 'salir' si deseas parar la Busqueda!");
             }
-            System.out.println();
         }
+
+        // Generando Estadisticas
+        System.out.println("\nEstadísticas por género:");
+        Map<String, Long> personajesPorGenero = todosLosPersonajes.stream()
+                .filter(p -> p.genero() != null && !p.genero().isBlank())
+                .collect(Collectors.groupingBy(
+                        p -> p.genero().toLowerCase(),
+                        Collectors.counting()
+                ));
+
+        personajesPorGenero.forEach((genero, cantidad) ->
+                System.out.println("Género: " + genero + " | Cantidad: " + cantidad));
+
+        System.out.println("\nEstadísticas del Ki de los personajes:");
+
+        DoubleSummaryStatistics statsKi = todosLosPersonajes.stream()
+                .filter(p -> p.ki() != null && p.ki().replace(".", "").matches("\\d+"))
+                .mapToDouble(p -> Double.parseDouble(p.ki().replace(".", "")))
+                .summaryStatistics();
+
+        System.out.println("Cantidad total con Ki válido: " + statsKi.getCount());
+        System.out.println("Suma total de Ki: " + statsKi.getSum());
+        System.out.println("Promedio de Ki: " + statsKi.getAverage());
+        System.out.println("Ki mínimo: " + statsKi.getMin());
+        System.out.println("Ki máximo: " + statsKi.getMax());
     }
 }
