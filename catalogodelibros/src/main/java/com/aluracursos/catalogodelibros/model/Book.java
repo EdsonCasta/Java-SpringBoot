@@ -2,7 +2,7 @@ package com.aluracursos.catalogodelibros.model;
 
 import java.util.List;
 
-public class book {
+public class Book {
 
     private Integer id;
     private String title;
