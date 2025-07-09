@@ -2,11 +2,11 @@ package com.aluracursos.catalogodelibros.model;
 
 import java.util.List;
 
-public class Libro {
+public class book {
 
     private Integer id;
     private String title;
-    private List<Autor> authors;
+    private List<Author> authors;
     private List<String> lenguages;
 
     public Integer getId() {
@@ -25,11 +25,11 @@ public class Libro {
         this.title = title;
     }
 
-    public List<Autor> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Autor> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
