@@ -1,5 +1,8 @@
 package com.aluracursos.catalogodelibros.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Author {
 
     private String name;
@@ -28,5 +31,14 @@ public class Author {
 
     public void setDeath_year(Integer death_year) {
         this.death_year = death_year;
+    }
+
+    @Override
+    public String toString(){
+        return "Autor{" +
+                "name='" + name + '\'' +
+                ", birth_year=" + birth_year +
+                ", death_year=" + death_year +
+                '}';
     }
 }

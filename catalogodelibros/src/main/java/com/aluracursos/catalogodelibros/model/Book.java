@@ -1,13 +1,17 @@
 package com.aluracursos.catalogodelibros.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
 
     private Integer id;
-    private String title;
+    @JsonAlias("title") String titulo;
     private List<Author> authors;
-    private List<String> lenguages;
+    private List<String> languages;
 
     public Integer getId() {
         return id;
@@ -18,11 +22,11 @@ public class Book {
     }
 
     public String getTitle() {
-        return title;
+        return titulo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String titulo) {
+        this.titulo = titulo;
     }
 
     public List<Author> getAuthors() {
@@ -33,11 +37,20 @@ public class Book {
         this.authors = authors;
     }
 
-    public List<String> getLenguages() {
-        return lenguages;
+    public List<String> getLanguages() {
+        return languages;
     }
 
-    public void setLenguages(List<String> lenguages) {
-        this.lenguages = lenguages;
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
+    }
+
+    @Override
+    public String toString() {
+        return "Book: " +
+                "| id: " + id +
+                " | titulo: " + titulo +
+                " | authors: " + authors +
+                " | languages: " + languages;
     }
 }

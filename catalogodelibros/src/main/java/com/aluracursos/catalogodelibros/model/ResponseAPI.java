@@ -1,13 +1,17 @@
 package com.aluracursos.catalogodelibros.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseAPI {
 
     private Integer count;
     private String next;
     private String previous;
-    private List<Book> results;
+    @JsonAlias("results") private List<Book> books;
 
     public Integer getCount() {
         return count;
@@ -33,11 +37,21 @@ public class ResponseAPI {
         this.previous = previous;
     }
 
-    public List<Book> getResults() {
-        return results;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setResults(List<Book> results) {
-        this.results = results;
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return "RespuestaAPI{" +
+                "count=" + count +
+                ", next='" + next + '\'' +
+                ", previous='" + previous + '\'' +
+                ", libros=" + books +
+                '}';
     }
 }
