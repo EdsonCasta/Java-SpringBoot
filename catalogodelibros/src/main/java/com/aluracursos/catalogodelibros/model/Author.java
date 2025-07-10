@@ -5,40 +5,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Author {
 
-    private String name;
-    private Integer birth_year;
-    private Integer death_year;
+    private String nombre;
+    private Integer anoDeNacimiento;
+    private Integer anoDeFallecimiento;
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Integer getBirth_year() {
-        return birth_year;
+    public Integer getAnoDeNacimiento() {
+        return anoDeNacimiento;
     }
 
-    public void setBirth_year(Integer birth_year) {
-        this.birth_year = birth_year;
+    public void setAnoDeNacimiento(Integer anoDeNacimiento) {
+        this.anoDeNacimiento = anoDeNacimiento;
     }
 
-    public Integer getDeath_year() {
-        return death_year;
+    public Integer getAnoDeFallecimiento() {
+        return anoDeFallecimiento;
     }
 
-    public void setDeath_year(Integer death_year) {
-        this.death_year = death_year;
+    public void setAnoDeFallecimiento(Integer anoDeFallecimiento) {
+        this.anoDeFallecimiento = anoDeFallecimiento;
     }
 
     @Override
     public String toString(){
-        return "Autor{" +
-                "name='" + name + '\'' +
-                ", birth_year=" + birth_year +
-                ", death_year=" + death_year +
-                '}';
+        return "AUTOR: " +
+                "| name: " + nombre +
+                " | Año de Nacimiento: " + anoDeNacimiento +
+                " | Año de Fallecimiento: " + anoDeFallecimiento;
     }
 }
