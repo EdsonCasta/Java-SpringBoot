@@ -1,56 +1,69 @@
 package com.aluracursos.catalogodelibros.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
 
-    private Integer id;
-    @JsonAlias("title") String titulo;
-    private List<Author> authors;
-    private List<String> languages;
+    private Long id;
+    private String titulo;
+    private List<Author> autor;
+    private List<String> idiomas;
+    private Integer numeroDeDescargas;
 
-    public Integer getId() {
+    public Book(DataBook dataBook) {
+        this.titulo = dataBook.titulo();
+        this.autor = dataBook.autor();
+        this.idiomas = dataBook.idiomas();
+        this.numeroDeDescargas = dataBook.numeroDeDescargas();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getTitulo() {
         return titulo;
     }
 
-    public void setTitle(String titulo) {
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public List<Author> getAutor() {
+        return autor;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setAutor(List<Author> autor) {
+        this.autor = autor;
     }
 
-    public List<String> getLanguages() {
-        return languages;
+    public List<String> getIdiomas() {
+        return idiomas;
     }
 
-    public void setLanguages(List<String> languages) {
-        this.languages = languages;
+    public void setIdiomas(List<String> idiomas) {
+        this.idiomas = idiomas;
+    }
+
+    public Integer getNumeroDeDescargas() {
+        return numeroDeDescargas;
+    }
+
+    public void setNumeroDeDescargas(Integer numeroDeDescargas) {
+        this.numeroDeDescargas = numeroDeDescargas;
     }
 
     @Override
     public String toString() {
-        return "Book: " +
+        return "BOOK: " +
                 "| id: " + id +
-                " | titulo: " + titulo +
-                " | authors: " + authors +
-                " | languages: " + languages;
+                " | Titulo: " + titulo +
+                " | Autor: " + autor +
+                " | Idiomas: " + idiomas +
+                " | Número de Descargas: " + numeroDeDescargas;
     }
 }
