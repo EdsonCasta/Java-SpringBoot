@@ -1,30 +1,56 @@
 package com.aluracursos.catalogodelibros.main;
 
-import com.aluracursos.catalogodelibros.model.Book;
-import com.aluracursos.catalogodelibros.model.ResponseAPI;
 import com.aluracursos.catalogodelibros.service.ConsumptionAPI;
 import com.aluracursos.catalogodelibros.service.ConvertData;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Scanner;
 
-public class Main {
+@Component
+public class Main implements CommandLineRunner {
 
-    private static final String URL_BASE = "https://gutendex.com/books/";
+    private final ConsumptionAPI consumptionAPI = new ConsumptionAPI();
+    private final ConvertData converter = new ConvertData();
 
-    public static void main(String[] args){
+    private static final String URL_BASE = "https://gutendex.com/books";
 
-        ConsumptionAPI consumptionAPI = new ConsumptionAPI();
-        ConvertData converter = new ConvertData();
+    @Override
+    public void run(String... args) {
+        Scanner scanner = new Scanner(System.in);
 
-        String json = consumptionAPI.getData(URL_BASE);
-        ResponseAPI response = converter.parseResponse(json);
+        int option = -1;
 
-        System.out.println("Total de libros encontrados: " + response.getCount());
-        List<Book> books = response.getBooks();
+        while (option != 0){
+            var menu = """
+                    \n===== CATALOGO DE LIBROS =====
+                    \n1 - Buscar libros por título
+                    \n0 - Salir
+                    \nElige una opción:
+                    """;
+            System.out.println(menu);
 
-        for (Book book : books) {
-            System.out.println(book);
-            System.out.println("---------");
+            try {
+                option = Integer.parseInt(scanner.nextLine());
+
+                switch (option){
+                    case 1:
+                        SearchBooksByTitle(scanner);
+                        break;
+                    case 0:
+                        System.out.println("¡Hasta pronto!");
+                        break;
+                    default:
+                        System.out.println("Opción inválida, intenta nuevamente");
+                }
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida, ingresa un número");
+            }
         }
+        scanner.close();
+    }
+
+    private void SearchBooksByTitle(Scanner scanner) {
+        System.out.println("Ingresa el título que deseas buscar: ");
     }
 }
