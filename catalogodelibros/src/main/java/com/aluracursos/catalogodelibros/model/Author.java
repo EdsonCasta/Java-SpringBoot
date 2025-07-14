@@ -1,13 +1,28 @@
 package com.aluracursos.catalogodelibros.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class Author {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombre;
     private Integer anoDeNacimiento;
     private Integer anoDeFallecimiento;
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Book> books;
+
+    public Author (){}
+
+    public Author(DataAuthor dataAuthor) {
+        this.nombre = dataAuthor.nombre();
+        this.anoDeNacimiento = dataAuthor.anoDeNacimiento();
+        this.anoDeFallecimiento = dataAuthor.anoDeFallecimiento();
+    }
 
     public String getNombre() {
         return nombre;
@@ -36,8 +51,8 @@ public class Author {
     @Override
     public String toString(){
         return "AUTOR: " +
-                "| name: " + nombre +
-                " | Año de Nacimiento: " + anoDeNacimiento +
-                " | Año de Fallecimiento: " + anoDeFallecimiento;
+                "| Nombre: " + nombre +
+                " | Nació: " + anoDeNacimiento +
+                " | Falleció: " + anoDeFallecimiento;
     }
 }

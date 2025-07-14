@@ -1,20 +1,28 @@
 package com.aluracursos.catalogodelibros.model;
 
-import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
-    private List<Author> autor;
-    private List<String> idiomas;
+    @ManyToOne
+    private Author autor;
+    private String idioma;
     private Integer numeroDeDescargas;
+
+    public Book (){}
 
     public Book(DataBook dataBook) {
         this.titulo = dataBook.titulo();
-        this.autor = dataBook.autor();
-        this.idiomas = dataBook.idiomas();
         this.numeroDeDescargas = dataBook.numeroDeDescargas();
+
+        if (dataBook.idiomas() != null && !dataBook.idiomas().isEmpty()) {
+            this.idioma = dataBook.idiomas().get(0);
+        }
     }
 
     public Long getId() {
@@ -33,20 +41,20 @@ public class Book {
         this.titulo = titulo;
     }
 
-    public List<Author> getAutor() {
+    public Author getAutor() {
         return autor;
     }
 
-    public void setAutor(List<Author> autor) {
+    public void setAutor(Author autor) {
         this.autor = autor;
     }
 
-    public List<String> getIdiomas() {
-        return idiomas;
+    public String getIdioma() {
+        return idioma;
     }
 
-    public void setIdiomas(List<String> idiomas) {
-        this.idiomas = idiomas;
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
     public Integer getNumeroDeDescargas() {
@@ -63,7 +71,7 @@ public class Book {
                 "| id: " + id +
                 " | Titulo: " + titulo +
                 " | Autor: " + autor +
-                " | Idiomas: " + idiomas +
+                " | Idiomas: " + idioma +
                 " | Número de Descargas: " + numeroDeDescargas;
     }
 }

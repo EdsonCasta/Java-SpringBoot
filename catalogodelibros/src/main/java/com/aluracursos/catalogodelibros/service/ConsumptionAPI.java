@@ -8,7 +8,9 @@ import java.net.http.HttpResponse;
 
 public class ConsumptionAPI {
     public String getData(String url) {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
@@ -18,7 +20,6 @@ public class ConsumptionAPI {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error al consumir la API: " + e.getMessage(), e);
         }
-
         String json = response.body();
         return json;
     }

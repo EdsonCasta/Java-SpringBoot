@@ -1,23 +1,39 @@
 package com.aluracursos.catalogodelibros.main;
 
+import com.aluracursos.catalogodelibros.model.Author;
+import com.aluracursos.catalogodelibros.model.Book;
+import com.aluracursos.catalogodelibros.model.DataAuthor;
+import com.aluracursos.catalogodelibros.model.DataBook;
+import com.aluracursos.catalogodelibros.repository.AuthorRepository;
+import com.aluracursos.catalogodelibros.repository.BookRepository;
 import com.aluracursos.catalogodelibros.service.ConsumptionAPI;
 import com.aluracursos.catalogodelibros.service.ConvertData;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 @Component
 public class Main implements CommandLineRunner {
+
+    Scanner scanner = new Scanner(System.in);
 
     private final ConsumptionAPI consumptionAPI = new ConsumptionAPI();
     private final ConvertData converter = new ConvertData();
 
     private static final String URL_BASE = "https://gutendex.com/books";
 
+    private final BookRepository repository;
+    private final AuthorRepository authorRepository;
+
+    public Main(BookRepository repository, AuthorRepository authorRepository) {
+        this.repository = repository;
+        this.authorRepository = authorRepository;
+    }
+
     @Override
     public void run(String... args) {
-        Scanner scanner = new Scanner(System.in);
 
         int option = -1;
 
@@ -25,17 +41,20 @@ public class Main implements CommandLineRunner {
             var menu = """
                     \n===== CATALOGO DE LIBROS =====
                     \n1 - Buscar libros por título
+                    2 - Lista de todos los libros
+                    3 - Lista de autores
+                    4 - Listar autores vivos en determinado año
                     \n0 - Salir
                     \nElige una opción:
                     """;
             System.out.println(menu);
+            option = scanner.nextInt();
+            scanner.nextLine();
 
             try {
-                option = Integer.parseInt(scanner.nextLine());
-
                 switch (option){
                     case 1:
-                        SearchBooksByTitle(scanner);
+                        SearchBooksByTitle();
                         break;
                     case 0:
                         System.out.println("¡Hasta pronto!");
@@ -50,7 +69,52 @@ public class Main implements CommandLineRunner {
         scanner.close();
     }
 
-    private void SearchBooksByTitle(Scanner scanner) {
-        System.out.println("Ingresa el título que deseas buscar: ");
+    private DataBook getDataBook() {
+        System.out.println("Escribe el nombre del libro que deseas buscar: ");
+        var nameBook = scanner.nextLine();
+
+        try {
+            var json = consumptionAPI.getData(URL_BASE + "?search=" + nameBook);
+
+            var response = converter.parseResponse(json);
+
+            if (response.getBooks() != null && !response.getBooks().isEmpty()) {
+                return response.getBooks().get(0);
+            }else {
+                System.out.println("No se encontraron libros para: " + nameBook);
+            }
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al procesar los datos: " + e.getMessage());
+        }
+        return null;
     }
+
+    private void SearchBooksByTitle() {
+        DataBook data = getDataBook();
+
+        if (data != null && data.autores() != null && !data.autores().isEmpty()) {
+            DataAuthor dataAuthor = data.autores().get(0);
+
+            Optional<Author> autorExistente = authorRepository.findByNombre(dataAuthor.nombre());
+
+            Author autor;
+            if (autorExistente.isPresent()) {
+                autor = autorExistente.get();
+            } else {
+                autor = new Author(dataAuthor);
+                authorRepository.save(autor);
+            }
+
+            Book book = new Book(data);
+            book.setAutor(autor);
+
+            repository.save(book);
+            System.out.println("Libro guardado en la base de datos: " + book.getTitulo());
+
+        } else {
+            System.out.println("No se encontró ningún libro con ese título o no tiene autores.");
+        }
+    }
+
+
 }

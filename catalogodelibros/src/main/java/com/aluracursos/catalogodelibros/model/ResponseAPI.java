@@ -11,7 +11,7 @@ public class ResponseAPI {
     private Integer count;
     private String next;
     private String previous;
-    @JsonAlias("results") private List<Book> books;
+    @JsonAlias("results") private List<DataBook> books;
 
     public Integer getCount() {
         return count;
@@ -37,11 +37,11 @@ public class ResponseAPI {
         this.previous = previous;
     }
 
-    public List<Book> getBooks() {
+    public List<DataBook> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(List<DataBook> books) {
         this.books = books;
     }
 
