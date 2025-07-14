@@ -42,8 +42,9 @@ public class Main implements CommandLineRunner {
                     \n===== CATALOGO DE LIBROS =====
                     \n1 - Buscar libros por título
                     2 - Lista de todos los libros
-                    3 - Lista de autores
-                    4 - Listar autores vivos en determinado año
+                    3 - Lista de libros por idioma
+                    4 - Lista de autores
+                    5 - Listar autores vivos en determinado año
                     \n0 - Salir
                     \nElige una opción:
                     """;
@@ -58,6 +59,9 @@ public class Main implements CommandLineRunner {
                         break;
                     case 2:
                         showAllBooks();
+                        break;
+                    case 3:
+                        showBooksByLanguage();
                         break;
                     case 0:
                         System.out.println("¡Hasta pronto!");
@@ -131,4 +135,29 @@ public class Main implements CommandLineRunner {
         }
     }
 
+    private void showBooksByLanguage() {
+
+        var idiomas = repository.findDistinctIdiomas();
+
+        if (idiomas.isEmpty()) {
+            System.out.println("⚠️ No hay libros guardados aún, por lo tanto no hay idiomas disponibles.");
+            return;
+        }
+
+        System.out.println();
+        System.out.println("Idiomas disponibles:");
+        idiomas.forEach(System.out::println);
+
+        System.out.println();
+        System.out.println("Ingresa uno de los idiomas listado arriba para ver el listado de libros: ");
+        String language = scanner.nextLine();
+
+        var books = repository.findByIdioma(language);
+        if (books.isEmpty()) {
+            System.out.println("No hay libros guardados con este idioma: " + language);
+        } else {
+            System.out.println("Los libros en idioma " + "'" + language + "'" + " son: ");
+            books.forEach(System.out::println);
+        }
+    }
 }
