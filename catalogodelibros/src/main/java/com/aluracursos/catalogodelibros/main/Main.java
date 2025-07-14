@@ -56,6 +56,9 @@ public class Main implements CommandLineRunner {
                     case 1:
                         SearchBooksByTitle();
                         break;
+                    case 2:
+                        showAllBooks();
+                        break;
                     case 0:
                         System.out.println("¡Hasta pronto!");
                         break;
@@ -116,5 +119,16 @@ public class Main implements CommandLineRunner {
         }
     }
 
+    private void showAllBooks(){
+
+        var books = repository.findAll();
+
+        if (books.isEmpty()){
+            System.out.println("No hay libros en la base de datos");
+        } else {
+            System.out.println("Lista de libros guardados: ");
+            books.forEach(System.out::println);
+        }
+    }
 
 }
