@@ -11,6 +11,7 @@ import com.aluracursos.catalogodelibros.service.ConvertData;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -62,6 +63,12 @@ public class Main implements CommandLineRunner {
                         break;
                     case 3:
                         showBooksByLanguage();
+                        break;
+                    case 4:
+                        showAllAuthors();
+                        break;
+                    case 5:
+                        showAuthorsAliveInYear();
                         break;
                     case 0:
                         System.out.println("¡Hasta pronto!");
@@ -158,6 +165,30 @@ public class Main implements CommandLineRunner {
         } else {
             System.out.println("Los libros en idioma " + "'" + language + "'" + " son: ");
             books.forEach(System.out::println);
+        }
+    }
+
+    private void showAllAuthors() {
+        var authors = authorRepository.findAll();
+        if (authors.isEmpty()) {
+            System.out.println("No hay autores guardados en la base de datos");
+        } else {
+            System.out.println("Lista de autores: ");
+            authors.forEach(System.out::println);
+        }
+    }
+
+    private void showAuthorsAliveInYear() {
+        System.out.println("Ingresa el año para consultar autores vivos: ");
+        Integer year = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Author> authors =  authorRepository.findAuthorsAliveInYear(year);
+        if (authors.isEmpty()) {
+            System.out.println("No se encontraron autores vivos en el año: " + year);
+        } else {
+            System.out.println("Autores vivos  en el año " + year + ": ");
+            authors.forEach(System.out::println);
         }
     }
 }
