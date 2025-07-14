@@ -12,6 +12,4 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT DISTINCT b.idioma FROM Book b")
     List<String> findDistinctIdiomas();
-
-    Long countByIdioma(String idioma);
 }

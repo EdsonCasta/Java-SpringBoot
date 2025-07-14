@@ -137,7 +137,6 @@ public class Main implements CommandLineRunner {
     }
 
     private void showAllBooks(){
-
         var books = repository.findAll();
 
         if (books.isEmpty()){
@@ -149,7 +148,6 @@ public class Main implements CommandLineRunner {
     }
 
     private void showBooksByLanguage() {
-
         var idiomas = repository.findDistinctIdiomas();
 
         if (idiomas.isEmpty()) {
@@ -199,7 +197,6 @@ public class Main implements CommandLineRunner {
     }
 
     private void showBookStatsByLanguages() {
-        // Map con los nombres completos de los idiomas
         Map<String, String> languageNames = Map.of(
                 "es", "Español",
                 "en", "Inglés",
