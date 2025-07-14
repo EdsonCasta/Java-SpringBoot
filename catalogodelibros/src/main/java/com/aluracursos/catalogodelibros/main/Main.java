@@ -12,8 +12,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
 public class Main implements CommandLineRunner {
@@ -46,6 +48,7 @@ public class Main implements CommandLineRunner {
                     3 - Lista de libros por idioma
                     4 - Lista de autores
                     5 - Listar autores vivos en determinado año
+                    6 - Mostrar estadisticas de libros por idioma
                     \n0 - Salir
                     \nElige una opción:
                     """;
@@ -69,6 +72,9 @@ public class Main implements CommandLineRunner {
                         break;
                     case 5:
                         showAuthorsAliveInYear();
+                        break;
+                    case 6:
+                        showBookStatsByLanguages();
                         break;
                     case 0:
                         System.out.println("¡Hasta pronto!");
@@ -189,6 +195,34 @@ public class Main implements CommandLineRunner {
         } else {
             System.out.println("Autores vivos  en el año " + year + ": ");
             authors.forEach(System.out::println);
+        }
+    }
+
+    private void showBookStatsByLanguages() {
+        // Map con los nombres completos de los idiomas
+        Map<String, String> languageNames = Map.of(
+                "es", "Español",
+                "en", "Inglés",
+                "fr", "Francés"
+                // agrega más si quieres
+        );
+
+        var books = repository.findAll();
+
+        if (books.isEmpty()) {
+            System.out.println("No hay libros guardados en la base de datos.");
+        } else {
+            var countsByLanguage = books.stream()
+                    .collect(Collectors.groupingBy(
+                            Book::getIdioma,
+                            Collectors.counting()
+                    ));
+            System.out.println();
+            System.out.println("Estadísticas de libros por idioma:");
+            countsByLanguage.forEach((language, count) -> {
+                String nombreCompleto = languageNames.getOrDefault(language, "Desconocido");
+                System.out.println(nombreCompleto + " (" + language + "): " + count + " libro(s)");
+            });
         }
     }
 }
