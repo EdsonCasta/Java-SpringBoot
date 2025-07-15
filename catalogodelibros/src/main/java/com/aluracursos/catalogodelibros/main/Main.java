@@ -53,8 +53,14 @@ public class Main implements CommandLineRunner {
                     \nElige una opción:
                     """;
             System.out.println(menu);
-            option = scanner.nextInt();
-            scanner.nextLine();
+            String input = scanner.nextLine();
+            try {
+                option = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida, ingresa un número");
+                option = -1;
+                continue;
+            }
 
             try {
                 switch (option){
@@ -82,8 +88,8 @@ public class Main implements CommandLineRunner {
                     default:
                         System.out.println("Opción inválida, intenta nuevamente");
                 }
-            } catch (NumberFormatException e){
-                System.out.println("Entrada inválida, ingresa un número");
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error: " + e.getMessage());
             }
         }
         scanner.close();
@@ -200,8 +206,8 @@ public class Main implements CommandLineRunner {
         Map<String, String> languageNames = Map.of(
                 "es", "Español",
                 "en", "Inglés",
-                "fr", "Francés"
-                // agrega más si quieres
+                "fr", "Francés",
+                "it", "Italiano"
         );
 
         var books = repository.findAll();
