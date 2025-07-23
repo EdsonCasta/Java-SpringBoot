@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.direccion.Direccion;
 
+@Table(name = "medicos")
+@Entity(name = "Medico")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Table(name = "medicos")
-@Entity(name = "Medico")
 public class Medico {
 
     @Id
@@ -25,4 +25,13 @@ public class Medico {
     private Especilidad especilidad;
     @Embedded
     private Direccion direccion;
+
+    public Medico(DatosRegistroMedico datos) {
+        this.id = null;
+        this.nombre = datos.nombre();
+        this.email = datos.email();
+        this.documento = datos.documento();
+        this.especilidad = datos.especialidad();
+        this.direccion = new Direccion(datos.direccion());
+    }
 }
