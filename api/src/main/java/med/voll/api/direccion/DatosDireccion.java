@@ -1,11 +1,13 @@
 package med.voll.api.direccion;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record DatosDireccion(
-        String calle,
+        @NotBlank String calle,
         String numero,
         String complemento,
-        String barrio,
-        String ciudad,
-        String estado
+        @NotBlank String barrio,
+        @NotBlank String ciudad,
+        @NotBlank String estado
 ) {
 }
