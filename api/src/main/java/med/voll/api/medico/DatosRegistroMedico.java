@@ -9,8 +9,9 @@ import med.voll.api.direccion.DatosDireccion;
 
 public record DatosRegistroMedico(
         @NotBlank String nombre,
-        @NotBlank @Email String email,
         @NotBlank @Pattern(regexp = "\\d{7,10}") String documento,
+        @NotBlank @Email String email,
+        @NotBlank String telefono,
         @NotNull Especilidad especialidad,
         @NotNull @Valid DatosDireccion direccion
 ) {
