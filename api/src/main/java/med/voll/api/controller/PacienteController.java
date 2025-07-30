@@ -33,4 +33,11 @@ public class PacienteController {
         var paciente = repository.getReferenceById(datos.id());
         paciente.actualizarInfo(datos);
     }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        var paciente = repository.getReferenceById(id);
+        paciente.eliminar();
+    }
 }
