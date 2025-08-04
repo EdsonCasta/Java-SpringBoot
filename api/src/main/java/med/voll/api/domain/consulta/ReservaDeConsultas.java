@@ -1,5 +1,6 @@
 package med.voll.api.domain.consulta;
 
+import jakarta.validation.Valid;
 import med.voll.api.domain.ValidacionException;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
@@ -31,7 +32,7 @@ public class ReservaDeConsultas {
 
         var medico = elegirMedico(datos);
         var paciente = pacienteRepository.findById(datos.idPaciente()).get();
-        var consulta = new Consulta(null, medico, paciente, datos.consultaFecha());
+        var consulta = new Consulta(null, medico, paciente, datos.consultaFecha(), null);
 
         consultaRepository.save(consulta);
     }
@@ -42,10 +43,19 @@ public class ReservaDeConsultas {
             return medicoRepository.getReferenceById(datos.idMedico());
         }
 
-        if (datos.especilidad() != null) {
+        if (datos.especialidad() == null) {
             throw new ValidacionException("Es necesario elirgir una especialidad cuando no se elige un medico");
         }
 
-        return medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(datos.especilidad(), datos.consultaFecha());
+        return medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(datos.especialidad(), datos.consultaFecha());
+    }
+
+    public void cancelar(@Valid DatosCancelamientoConsulta datos) {
+
+        if (!consultaRepository.existsById(datos.idConsulta())) {
+            throw new ValidacionException("Id de la consulta informado no existe!");
+        }
+        var consulta = consultaRepository.getReferenceById(datos.idConsulta());
+        consulta.cancelar(datos.motivo());
     }
 }
