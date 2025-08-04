@@ -1,6 +1,7 @@
 package med.voll.api.domain.consulta;
 
 import med.voll.api.domain.ValidacionException;
+import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,23 @@ public class ReservaDeConsultas {
             throw new ValidacionException("No existe un medico con el id informado");
         }
 
-        var medico = medicoRepository.findById(datos.idMedico()).get();
+        var medico = elegirMedico(datos);
         var paciente = pacienteRepository.findById(datos.idPaciente()).get();
         var consulta = new Consulta(null, medico, paciente, datos.consultaFecha());
 
         consultaRepository.save(consulta);
+    }
+
+    private Medico elegirMedico(DatosReservaConsulta datos) {
+
+        if(datos.idMedico() != null) {
+            return medicoRepository.getReferenceById(datos.idMedico());
+        }
+
+        if (datos.especilidad() != null) {
+            throw new ValidacionException("Es necesario elirgir una especialidad cuando no se elige un medico");
+        }
+
+        return medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(datos.especilidad(), datos.consultaFecha());
     }
 }
