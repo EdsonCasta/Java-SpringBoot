@@ -12,7 +12,7 @@ public record DatosRegistroMedico(
         @NotBlank @Pattern(regexp = "\\d{7,10}") String documento,
         @NotBlank @Email String email,
         @NotBlank String telefono,
-        @NotNull Especilidad especialidad,
+        @NotNull Especialidad especialidad,
         @NotNull @Valid DatosDireccion direccion
 ) {
 }

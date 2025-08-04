@@ -25,7 +25,7 @@ public class Medico {
     private String email;
     private String telefono;
     @Enumerated(EnumType.STRING)
-    private Especilidad especialidad;
+    private Especialidad especialidad;
     @Embedded
     private Direccion direccion;
 

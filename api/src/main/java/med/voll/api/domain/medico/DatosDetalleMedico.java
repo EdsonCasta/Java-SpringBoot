@@ -8,7 +8,7 @@ public record DatosDetalleMedico(
         String documento,
         String email,
         String telefono,
-        Especilidad especilidad,
+        Especialidad especialidad,
         Direccion direccion
 ) {
     public DatosDetalleMedico(Medico medico) {

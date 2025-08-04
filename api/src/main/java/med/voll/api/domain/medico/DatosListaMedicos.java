@@ -5,7 +5,7 @@ public record DatosListaMedicos(
         String nombre,
         String email,
         String documento,
-        Especilidad especilidad
+        Especialidad especilidad
 ) {
     public DatosListaMedicos(Medico medico) {
         this(
