@@ -4,7 +4,7 @@ import med.voll.api.domain.ValidacionException;
 import med.voll.api.domain.consulta.ConsultaRepository;
 import med.voll.api.domain.consulta.DatosReservaConsulta;
 
-public class ValidadroMedicoConOtraConsultaEnElMismoHorario {
+public class ValidadorMedicoConOtraConsultaEnElMismoHorario {
 
     private ConsultaRepository repository;
 
