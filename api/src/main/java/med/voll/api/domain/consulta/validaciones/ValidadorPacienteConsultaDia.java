@@ -15,7 +15,7 @@ public class ValidadorPacienteConsultaDia implements ValidadorDeConsultas {
     public void validar(DatosReservaConsulta datos) {
         var primerHorario = datos.consultaFecha().withHour(7);
         var ultimoHorario = datos.consultaFecha().withHour(18);
-        var pacienteTieneOtraConsultaEnElDia = repository.existsByPacienteIdAndFechaBetween(datos.idPaciente(), primerHorario, ultimoHorario);
+        var pacienteTieneOtraConsultaEnElDia = repository.existsByPacienteIdAndConsultaFechaBetween(datos.idPaciente(), primerHorario, ultimoHorario);
         if (pacienteTieneOtraConsultaEnElDia) {
             throw new ValidacionException("Paciente ya tiene una consulta para ese dia");
         }

@@ -30,6 +30,7 @@ public class Consulta {
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
+    @Column(name = "fecha")
     private LocalDateTime consultaFecha;
 
     @Column(name = "motivo_cancelamiento")
